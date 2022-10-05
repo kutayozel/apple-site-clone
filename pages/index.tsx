@@ -6,6 +6,7 @@ import Landing from "../components/Landing";
 import { Tab } from "@headlessui/react";
 import { fetchCategories } from "../utils/fetchCategories";
 import { fetchProducts } from "../utils/fetchProducts";
+import Product from "../components/Product";
 
 interface Props {
   categories: Category[];
@@ -16,7 +17,7 @@ const Home = ({ categories, products }: Props) => {
   const showProducts = (category: number) => {
     return products
       .filter((product) => product.category._ref === categories[category]._id)
-      .map((product) => <Product />); //filter products by category
+      .map((product) => <Product product={product} key={product._id} />); //filter products by category
   };
 
   return (
