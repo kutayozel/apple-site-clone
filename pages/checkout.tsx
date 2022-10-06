@@ -25,15 +25,15 @@ const Checkout = () => {
   }, [items]);
 
   return (
-    <div>
+    <div className="min-h-screen overflow-hidden bg-[#E7ECEE]">
       <Head>
         <title>Cart - Apple</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header />
-      <main>
-        <div>
-          <h1 className="lg:text:4xl my-4 text-3xl font-semibold">
+      <main className="mx-auto max-w-5xl pb-24">
+        <div className="px-5">
+          <h1 className="my-4 text-3xl font-semibold lg:text-4xl">
             {items.length > 0 ? "Review your bag." : "Your bag is empty."}
           </h1>
           <p className="my-4">Free delivery and free returns.</p>
@@ -47,7 +47,7 @@ const Checkout = () => {
         </div>
 
         {items.length > 0 && (
-          <div>
+          <div className="mx-5 md:mx-8">
             {Object.entries(groupedItemsInBasket).map(([key, items]) => (
               <CheckoutProduct key={key} items={items} id={key} />
             ))}
