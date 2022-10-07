@@ -12,6 +12,11 @@ import React, { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import Button from "../components/Button";
 import Currency from "react-currency-formatter";
+import { GetServerSideProps } from "next";
+
+interface SuccessProps {
+  products: StripeProduct;
+}
 
 const Success = () => {
   const router = useRouter();
@@ -156,3 +161,14 @@ const Success = () => {
 };
 
 export default Success;
+
+export const getServerSideProps: GetServerSideProps<SuccessProps> = async ({
+  query,
+}) => {
+  const sessionId = query.session_id as string;
+  // const products = await fetchLineItems(sessionId)
+
+  return {
+    props: {},
+  };
+};
