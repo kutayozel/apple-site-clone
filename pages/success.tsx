@@ -1,13 +1,40 @@
-import { CheckIcon } from "@heroicons/react/outline";
+import {
+  CheckIcon,
+  ChevronDownIcon,
+  ChevronUpIcon,
+  ShoppingCartIcon,
+} from "@heroicons/react/outline";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useMediaQuery } from "react-responsive";
+import Button from "../components/Button";
+import Currency from "react-currency-formatter";
 
 const Success = () => {
   const router = useRouter();
   const { session_id } = router.query;
+
+  const [mounted, setMounted] = useState(false);
+  const [showOrderSummary, setShowOrderSummary] = useState(false);
+  // const subtotal = products.reduce(
+  //   (acc, product) => acc + product.price.unit_amount / 100,
+  //   0
+  // );
+
+  //showOrderSummary always true for desktop but only condtionally true for mobile
+  const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1024px)" });
+  const showOrderSummaryCondition = isTabletOrMobile ? showOrderSummary : true;
+
+  const handleShowOrderSummary = () => {
+    setShowOrderSummary(!showOrderSummary);
+  };
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
     <div>
@@ -77,9 +104,52 @@ const Success = () => {
             </p>
           </div>
           <div>
-            <p className="lg: inline hidden">Need help? Contact us</p>
+            <p className="hidden lg:inline">Need help? Contact us</p>
+            {mounted && (
+              <Button
+                title="Continue Shopping"
+                onClick={() => router.push("/")}
+                width={isTabletOrMobile ? "w-full" : undefined}
+                padding="py-4"
+              />
+            )}
           </div>
         </section>
+
+        {mounted && (
+          <section>
+            <div
+              className={`w-full ${
+                showOrderSummaryCondition && "border-b"
+              } border-x-gray-300 text-sm lg:hidden`}
+            >
+              <div className="mx-auto flex max-w-xl items-center justify-between px-4 py-6">
+                <button
+                  onClick={handleShowOrderSummary}
+                  className="flex items-center space-x-2"
+                >
+                  <ShoppingCartIcon className="h-6 w-6" />
+                  <p>Show order summary</p>
+                  {showOrderSummaryCondition ? (
+                    <ChevronUpIcon className="h-4 w-4" />
+                  ) : (
+                    <ChevronDownIcon className="h-4 w-4" />
+                  )}
+                </button>
+
+                <p className="text-xl font-medium text-black">
+                  {/* <Currency quantity={subtotal + 20} /> */}
+                </p>
+              </div>
+            </div>
+
+            {showOrderSummaryCondition && (
+              <div>
+                <div></div>
+              </div>
+            )}
+          </section>
+        )}
       </main>
     </div>
   );
