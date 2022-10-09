@@ -14,6 +14,7 @@ import Button from "../components/Button";
 import Currency from "react-currency-formatter";
 import { GetServerSideProps } from "next";
 import { fetchLineItems } from "../utils/fetchLineItems";
+import { useSession } from "next-auth/react";
 
 interface SuccessProps {
   products: StripeProduct[];
@@ -30,6 +31,7 @@ const Success = ({ products }: SuccessProps) => {
     (acc, product) => acc + product.price.unit_amount / 100,
     0
   );
+  const { data: session } = useSession();
 
   //showOrderSummary always true for desktop but only condtionally true for mobile
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1024px)" });
@@ -83,7 +85,7 @@ const Success = ({ products }: SuccessProps) => {
               </p>
               <h4 className="text-lg">
                 Thank you{" "}
-                {/* {session ? session_id.user?.name?.split(" ")[0] : "Guest" } */}
+                {session ? session.user?.name?.split(" ")[0] : "Guest"}
               </h4>
             </div>
           </div>
